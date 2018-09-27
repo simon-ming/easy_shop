@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		html{
+			overflow: hidden
+		}
+		.a{
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+			background: red;
+			position: absolute
+		}
+		.min{
+			width: 6px;
+			height: 6px;
+			background: green;
+			position: absolute;
+		}
+	</style>
+</head>
+<body>
+	<div class="a"></div>
+	<script>
+		var G=(function(){
+			var $body=document.querySelector('body');
+			return {
+					init(){
+						this.$a=document.querySelector('.a');
+						this.event();
+						this.sport();
+					},
+					event(){
+
+					},
+					// sport(){
+					// 	var _this=this
+					// 	console.log(_this.$a)
+					// 	var xspeed=4;
+					// 	var yspeed=2;
+					// 	var maxX=window.innerWidth-_this.$a.offsetWidth;
+					// 	var maxY=window.innerHeight-_this.$a.offsetHeight;
+					// 	var x=0,y=0;
+					// 	var t=0;
+					// 	var timer=setInterval(function(){
+					// 		x+=xspeed;
+					// 		y+=yspeed;
+					// 		yspeed+=1;
+					// 		if(x<=0){
+					// 			xspeed=-xspeed;
+					// 		}else if(x>=maxX){
+					// 			xspeed=-xspeed;
+					// 		}
+					// 		if(y<=0){
+					// 			yspeed=-yspeed;
+					// 		}else if(y>=maxY){
+					// 			// yspeed=-yspeed;
+					// 			// yspeed*=(yspeed>0)?-0.9:0
+					// 			console.log(yspeed)
+					// 		}
+					// 		if(y>maxY){
+					// 			yspeed*=-0.5
+					// 			y=maxY;
+					// 			console.log(yspeed)
+					// 			// if(yspeed<2){
+
+					// 			// }
+					// 		}
+					// 		_this.$a.style.left=x+'px';
+					// 		_this.$a.style.top=y+'px';
+					// 	},10)
+
+					// }
+					
+					// 圆周运动
+					sport(){
+						var _this=this
+						console.log(_this.$a)
+						var r=200;
+						var centerx=500;
+						var centery=300;
+						var i=Math.PI/180;
+						var x=500,y=300;
+						var deg=0;
+						setInterval(function(){
+							x=centerx-r*Math.cos(deg);
+							y=centery-r*Math.sin(deg);
+							$min=document.createElement('div');
+							$min.setAttribute('class','min')
+							$body.appendChild($min);
+		
+							deg+=2*i;
+							// if (deg>350*i) {
+							// 	deg=0;
+							// 	r-=10
+							// }
+							r=r-r/100
+							_this.$a.style.left=x-50+'px';
+							_this.$a.style.top=y-50+'px';
+							$min.style.left=x-3+'px';
+							$min.style.top=y-3+'px';
+						},30)
+
+					}
+				}
+		}())
+		G.init();
+	</script>
+</body>
+</html>
