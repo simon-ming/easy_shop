@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>商品名称</th>
+				<th>单价</th>
+				<th>购买数量</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- <tr>
+				<td>恶趣味</td>
+				<td>问问</td>
+				<td><input type="number"></td>
+				<td><a href="#" class="btn btn-danger add">加入购物车</a></td>
+			</tr> -->
+
+		</tbody>
+		<a href="buycar.html">购物车</a>
+	</table>
+	<script src="cookie.js"></script>
+	<script>
+		var opera=new OperationCookie();
+
+
+		var xhr=new XMLHttpRequest();
+		xhr.open('GET','shop.json',true);
+		xhr.send(null);
+		$tbody=document.querySelector('tbody');
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState===4 && xhr.status===200){
+				var data=xhr.responseText
+				var data=JSON.parse(data);
+				for(var i=0;i<data.length;i++){
+					var $tr=document.createElement('tr');
+					$tr.innerHTML='<td>'+data[i].name+'</td><td>'+data[i].price+'</td><td><input type="number" value=1></td><td><a href="#" class="btn btn-danger add">加入购物车</a></td>'
+					$tr.sid=data[i].id;
+					$tbody.appendChild($tr);
+				}
+			}
+		}
+		$tbody.onclick=function(e){
+			e= e || window.event;
+			var target=e.target;
+			if(target.className=='btn btn-danger add'){
+				var sid=target.parentElement.parentElement.sid;
+				var value=target.parentElement.previousElementSibling.firstChild.value;
+				var val=0;
+				val=opera.getItem(sid)?opera.getItem(sid):0;
+				val=val-0;
+				val+=(value-0);
+				opera.setItem(sid,val,1);
+				console.log(document.cookie);
+			} 
+		}
+	</script>
+</body>
+</html>

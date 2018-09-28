@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>商品名称</th>
+				<th>单价</th>
+				<th>购买数量</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- <tr>
+				<td>恶趣味</td>
+				<td>问问</td>
+				<td><input type="number"></td>
+				<td><a href="#" class="btn btn-danger add">加入购物车</a></td>
+			</tr> -->
+
+		</tbody>
+		<a href=""></a>
+	</table>
+	<script src="cookie.js"></script>
+	<script>
+		var opera=new OperationCookie();
+		console.log(document.cookie)
+
+		var xhr=new XMLHttpRequest();
+		xhr.open('GET','shop.json',true);
+		xhr.send(null);
+		$tbody=document.querySelector('tbody');
+		var shopMsg=document.cookie;
+		if(shopMsg != ''){
+			shopMsg=shopMsg.split('; ');
+			var msg={};
+			for(var j=0;j<shopMsg.length;j++){
+				msg[shopMsg[j].split('=')[0]]=shopMsg[j].split('=')[1];
+			}
+			console.log(msg)
+		
+			xhr.onreadystatechange=function(){//页面一加载就用商品id和数量向服务器请求商品数据
+				if(xhr.readyState===4 && xhr.status===200){
+					var data=xhr.responseText
+					var data=JSON.parse(data);
+					for(var i=0;i<data.length;i++){
+						if(data[i].id in msg){
+							var $tr=document.createElement('tr');
+							$tr.innerHTML='<td>'+data[i].name+'</td><td>'+data[i].price+'</td><td><input type="number" value='+msg[data[i].id]+'></td><td><a href="#" class="btn btn-danger add">删除</a></td>'
+							$tr.sid=data[i].id;
+							$tbody.appendChild($tr);
+						}
+						
+					}
+				}
+			} 
+		}
+
+		$tbody.onclick=function(e){//点击删除时,删除dom元素,删除本条数据对应的cookie
+			e= e || window.event;
+			var target=e.target;
+			var sid=target.parentElement.parentElement.sid;
+			var arr=[];
+			if(target.className=='btn btn-danger add'){
+				target.parentElement.parentElement.remove();
+				
+				// debugger;
+				
+				opera.removeItem(sid);
+				console.log(sid)
+				console.log(document.cookie);
+			} 
+		}
+		$tbody.onchange=function(e){//购物车的数量input框发生改变时,修改cookie
+			e= e || window.event;
+			var target=e.target || e.srcElement;
+			var sid=target.parentElement.parentElement.sid;
+			var arr=[];
+			if(target.nodeName=='INPUT'){
+				opera.setItem(sid,target.value,1);
+				console.log(sid)
+				console.log(document.cookie);
+			} 
+		}
+	</script>
+</body>
+</html>
